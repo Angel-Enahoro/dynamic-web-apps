@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Tally Count</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.12.0/cdn/themes/light.css"/>
+    <script type="module"
+            src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.12.0/cdn/shoelace-autoloader.js"></script>
+    <script type="module" src="./scripts.js" defer></script>
+</head>
+<body>
+<header>
+    <h1 class="header_title">Tally Count</h1>
+</header>
+
+<main class="counter">
+    <sl-input class="counter__value" data-key="number" readonly value="0"></sl-input>
+    <div class="counter__actions"></div>
+    <sl-button data-key="subtract" class="counter__button counter__button_first" @click=${subtractHandler}>-</sl-button>
+    <sl-button data-key="add" class="counter__button" @click=${addHandler}>+</sl-button>
+    <sl-button data-key="reset" class="counter__button" @click=${resetHandler}>Reset</sl-button>
+    <div id="confirmationMessage" style="display: none;"></div>
+</main>
+<footer class="footer">
+    Inspired by
+    <a class="footer__links" href="https://tallycount.app/"> Tally Count </a>.
+    Note that this is merely a practice project for learning Javascript.
+</footer>
+</body>
+</html>
