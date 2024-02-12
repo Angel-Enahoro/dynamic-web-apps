@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+   <!-- Meta tags for character set and viewport -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lit Tally App</title>
+
+  <!-- Import Lit library from Skypack CDN -->
+  <script type="module" src="https://cdn.skypack.dev/lit"></script>
+
+   <!-- Inline style block for CSS variables and styling -->
+  <style>
+
+      /* CSS variables for color palette */
+    :root {
+      --color-green: #31c48d;
+      --color-white: #fff;
+      --color-dark-grey: #33333d;
+      --color-medium-grey: #424250;
+      --color-light-grey: #9ca3ae;
+    }
+
+    * {
+      box-sizing: border-box;
+      font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+    }
+
+    html {
+      height: 100vh;
+    }
+
+    body {
+      margin: 0;
+      background: var(--color-medium-grey);
+      color: var(--color-white);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 100%;
+    }
+
+    .counter {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: var(--color-dark-grey);
+      padding: 1rem;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .counter__value {
+      font-size: 6rem;
+      font-weight: 900;
+      margin: 0 2rem;
+    }
+
+    .counter__button {
+      font-size: 3rem;
+      font-weight: bold;
+      height: 3rem;
+      width: 3rem;
+      background: none;
+      color: var(--color-white);
+      border: 2px solid var(--color-light-grey);
+      border-radius: 4px;
+      margin: 0 0.5rem;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.1s;
+    }
+
+    .counter__button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .counter__button:hover:enabled {
+      background: var(--color-light-grey);
+    }
+
+    .normal {
+      color: var(--color-white);
+    }
+
+    .minReached {
+      color: var(--color-green);
+    }
+
+    .maxReached {
+      color: var(--color-dark-grey);
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- Define the Lit template -->
+<script type="module">
+  import { LitElement, html, css } from 'https://cdn.skypack.dev/lit';
+  
+  /**
+   * TallyApp is a LitElement representing a Tally Counter application.
+   *
+   * @element tally-app
+   */
+  class TallyApp extends LitElement {
+    /**
+     * @property {Number} count - The current count of the tally.
+     */
+    static properties = {
+      count: { type: Number },
+      /**
+       * @property {String} state - The state of the tally ('normal', 'minReached', 'maxReached').
+       */
+      state: { type: String },
+    };
+
+    /**
+     * Constructor for TallyApp.
+     */
+    constructor() {
+      super();
+      /**
+       * @type {Number}
+       */
+      this.count = 0;
+      /**
+       * @type {String}
+       */
+      this.state = 'normal';
+    }
+
+    /**
+     * Increment the tally count and update the state.
+     */
+    increment() {
+      if (this.count < 10) {
+        this.count++;
+        this.updateState();
+      }
+    }
+
+    /**
+     * Decrement the tally count and update the state.
+     */
+    decrement() {
+      if (this.count > 0) {
+        this.count--;
+        this.updateState();
+      }
+    }
+
+    /**
+     * Update the state based on the current count value.
+     */
+    updateState() {
+      if (this.count === 0) {
+        this.state = 'minReached';
+      } else if (this.count === 10) {
+        this.state = 'maxReached';
+      } else {
+        this.state = 'normal';
+      }
+    }
+
+    /**
+     * Render the TallyApp component.
+     *
+     * @returns {TemplateResult} The HTML template for the component.
+     */
+    render() {
+      return html`
+        <div class="counter">
+          <button class="counter__button counter__button_first" @click=${this.decrement} ?disabled=${this.count === 0}>-</button>
+          <p class=${this.state === 'normal' ? 'counter__value normal' : this.state === 'minReached' ? 'counter__value minReached' : 'counter__value maxReached'}>
+            Count: ${this.count}
+          </p>
+          <button class="counter__button" @click=${this.increment} ?disabled=${this.count === 10}>+</button>
+        </div>
+      `;
+    }
+  }
+
+  customElements.define('tally-app', TallyApp);
+</script>
+
+<!-- Use the Lit component -->
+<tally-app></tally-app>
+
+</body>
+</html>
